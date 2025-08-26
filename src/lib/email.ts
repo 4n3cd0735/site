@@ -2,9 +2,12 @@ import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export async function sendAnecdoteNotification(to: string, anecdote: { title: string, content: string, author: string }) {
+export async function sendAnecdoteNotification(
+  to: string, 
+  anecdote: { title: string, content: string, author: string }
+) {
   try {
-    const { data, error } = await resend.emails.send({
+    const { data } = await resend.emails.send({
       from: 'Anecdotes App <onboarding@resend.dev>',
       to: [to],
       subject: `Nouvelle anecdote: ${anecdote.title}`,

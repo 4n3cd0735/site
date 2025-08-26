@@ -1,24 +1,16 @@
 'use client'
-
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { supabase } from '@/lib/supabase'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function AuthPage() {
-  const [user, setUser] = useState<any>(null)
   const router = useRouter()
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        router.push('/dashboard')
-      }
-    })
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session?.user) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') {
         router.push('/dashboard')
       }
     })
@@ -43,20 +35,7 @@ export default function AuthPage() {
             localization={{
               variables: {
                 sign_in: {
-                  email_label: 'Email',
-                  password_label: 'Mot de passe',
-                  button_label: 'Se connecter',
-                  loading_button_label: 'Connexion...',
-                  social_provider_text: 'Se connecter avec {{provider}}',
-                  link_text: 'Vous avez déjà un compte ? Connectez-vous'
-                },
-                sign_up: {
-                  email_label: 'Email',
-                  password_label: 'Mot de passe',
-                  button_label: "S'inscrire",
-                  loading_button_label: 'Inscription...',
-                  social_provider_text: "S'inscrire avec {{provider}}",
-                  link_text: "Vous n'avez pas de compte ? Inscrivez-vous"
+                  email_label: 'Email'
                 }
               }
             }}
